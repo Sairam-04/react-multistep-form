@@ -1,37 +1,74 @@
 import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { useMultiStepForm } from "../multistepformhook/useMultiStepForm";
-import UserDetails from "./UserDetails";
-import AddressDetails from "./AddressDetails";
-import FinalForm from "./FinalForm";
+import MobileSignUp from "./MobileSignUp";
+import ParentPassword from "./ParentPassword";
+import ParentDetails from "./ParentDetails";
+import ChildDetails from "./ChildDetails";
+// import {signupSchema} from '../validationschema'
 
 const RegistrationForm = () => {
   const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    username:"",
-    age:"",
-    street:"",
-    city:"",
-    state:"",
-    zip:"",
-    email: "",
-    password: "",
-    confirmpassword:""
+    parentsmobileno: "",
+    parentsmobileotp: "",
+    parentspassword: "",
+    parentsconfirmpassword: "",
+    parentsname: "",
+    parentssurname: "",
+    parentsalternateno: "",
+    parentsemail: "",
+    country: "",
+    postalzipcode: "",
+    state: "",
+    city: "",
+    district: "",
+    address: "",
+    mothertongue: "",
+    child: [
+      {
+        childname: "",
+        childsurname: "",
+        childdob: "",
+        childgender: "",
+        childnationality: "",
+        childclass: "",
+        childsyllabus: "",
+        childschool: "",
+        mediumofinstructution: "",
+        firstlanguage: "",
+        secondlanguage: "",
+        thirdlanguage: "",
+        childaccountpassword: "",
+        childconfirmpassword: "",
+      },
+    ],
   });
-  const updateFields = (fields) =>{
-    setData(prev =>{
-      return {...prev, ...fields}
-    })
-  }
-  const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
+
+  const [isOTPMatched, setIsOTPMatched] = useState(false);
+
+  const updateFields = (fields) => {
+    setData((prev) => {
+      return { ...prev, ...fields };
+    });
+  };
+
+  const { steps, currentStepIndex, step, isFirstStep, isSecondStep, isLastStep, back, next } =
     useMultiStepForm([
-      <UserDetails {...data} updateFields={updateFields} />, 
-      <AddressDetails {...data} updateFields={updateFields} />, 
-      <FinalForm {...data} updateFields={updateFields} />]
-    );
+      <MobileSignUp
+        {...data}
+        updateFields={updateFields}
+        isOTPMatched={isOTPMatched}
+        setIsOTPMatched={setIsOTPMatched}
+      />,
+      <ParentPassword 
+        {...data} 
+        updateFields={updateFields} 
+      />,
+      <ParentDetails {...data} updateFields={updateFields} />,
+      <ChildDetails {...data} updateFields={updateFields} />
+    ]);
 
-
+  const isNextButtonDisabled = !isOTPMatched; // Disable the Next button if OTP is not matched
 
   return (
     <>
@@ -45,16 +82,17 @@ const RegistrationForm = () => {
           borderRadius: ".5rem",
         }}
       >
-        <Formik 
-          initialValues={data} 
-          onSubmit={(e) => {
-            if(!isLastStep) return next()
-            
-            console.log(data)
-            alert("Data Submitted Successfully")
+        <Formik
+          initialValues={data}
+          // validationSchema={signupSchema}
+          onSubmit={(values, actions) => {
+            if (!isLastStep) return next();
+
+            console.log(data);
+            alert("Data Submitted Successfully");
           }}
         >
-          {() => (
+          {(formik) => (
             <Form>
               <div
                 style={{ position: "absolute", top: ".5rem", right: ".5rem" }}
@@ -70,12 +108,17 @@ const RegistrationForm = () => {
                   justifyContent: "flex-end",
                 }}
               >
-                {isFirstStep && (
+                {(isFirstStep && isSecondStep) && (
                   <button type="button" onClick={back}>
                     Back
                   </button>
                 )}
-                <button type="submit">{isLastStep ? "Submit" : "Next"}</button>
+                <button
+                  type="submit"
+                  disabled={isNextButtonDisabled} // Disable the Next button based on OTP matching
+                >
+                  {isLastStep ? "Submit" : "Next"}
+                </button>
               </div>
             </Form>
           )}
