@@ -44,7 +44,7 @@ const RegistrationForm = () => {
     ],
   });
 
-  const [isOTPMatched, setIsOTPMatched] = useState(true);
+  const [isOTPMatched, setIsOTPMatched] = useState(false);
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -61,12 +61,12 @@ const RegistrationForm = () => {
 
   const { steps, currentStepIndex, step, isFirstStep, isSecondStep, isLastStep, back, next } =
     useMultiStepForm([
-      // <MobileSignUp
-      //   {...data}
-      //   updateFields={updateFields}
-      //   isOTPMatched={isOTPMatched}
-      //   setIsOTPMatched={setIsOTPMatched}
-      // />,
+      <MobileSignUp
+        {...data}
+        updateFields={updateFields}
+        isOTPMatched={isOTPMatched}
+        setIsOTPMatched={setIsOTPMatched}
+      />,
       <ParentPassword 
         {...data} 
         updateFields={updateFields} 
