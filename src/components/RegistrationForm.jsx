@@ -44,7 +44,7 @@ const RegistrationForm = () => {
     ],
   });
 
-  const [isOTPMatched, setIsOTPMatched] = useState(false);
+  const [isOTPMatched, setIsOTPMatched] = useState(true);
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -52,20 +52,27 @@ const RegistrationForm = () => {
     });
   };
 
+  const addChild = () => {
+    setData((prev) => {
+      const updatedChild = [...prev.child, {}];
+      return { ...prev, child: updatedChild };
+    });
+  };
+
   const { steps, currentStepIndex, step, isFirstStep, isSecondStep, isLastStep, back, next } =
     useMultiStepForm([
-      <MobileSignUp
-        {...data}
-        updateFields={updateFields}
-        isOTPMatched={isOTPMatched}
-        setIsOTPMatched={setIsOTPMatched}
-      />,
+      // <MobileSignUp
+      //   {...data}
+      //   updateFields={updateFields}
+      //   isOTPMatched={isOTPMatched}
+      //   setIsOTPMatched={setIsOTPMatched}
+      // />,
       <ParentPassword 
         {...data} 
         updateFields={updateFields} 
       />,
       <ParentDetails {...data} updateFields={updateFields} />,
-      <ChildDetails {...data} updateFields={updateFields} />
+      <ChildDetails {...data} updateFields={updateFields} addChild={addChild} />
     ]);
 
   const isNextButtonDisabled = !isOTPMatched; // Disable the Next button if OTP is not matched
@@ -92,8 +99,9 @@ const RegistrationForm = () => {
             alert("Data Submitted Successfully");
           }}
         >
-          {(formik) => (
+          {({touched, errors}) => (
             <Form>
+              {console.log(errors)}
               <div
                 style={{ position: "absolute", top: ".5rem", right: ".5rem" }}
               >

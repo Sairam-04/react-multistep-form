@@ -82,7 +82,7 @@ const MobileSignUp = ({ parentsmobileno, parentsmobileotp, updateFields, isOTPMa
         onChange={handleMobileNumberChange}
         disabled={isFieldsDisabled} // Disable the input field based on the status
       />
-      <ErrorMessage name="parentsmobileno" component="p" className="error-text" />
+      <ErrorMessage name="parentsmobileno" component="div" />
 
       <label>OTP</label>
       <input
@@ -92,7 +92,7 @@ const MobileSignUp = ({ parentsmobileno, parentsmobileotp, updateFields, isOTPMa
         onChange={handleOTPChange}
         disabled={isFieldsDisabled} // Disable the input field based on the status
       />
-      <ErrorMessage name="parentsmobileotp" component="p" className="error-text" />
+      <ErrorMessage name="parentsmobileotp" component="div" />
 
       {parentsmobileotp && isOTPMatched === true && <p>Verification Successful</p>}
       {parentsmobileotp && isOTPMatched === false && <p>Verification Failed</p>}

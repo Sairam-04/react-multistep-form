@@ -5,21 +5,19 @@ const ParentPassword = ({ parentspassword, parentsconfirmpassword, updateFields 
   return (
     <FormWrapper title="Parents Password Setting">
       <label>Password</label>
-      <input
+      <Field
         name="parentspassword"
         type="password"
         value={parentspassword || ""} // Initialize value with an empty string
         onChange={(e) => updateFields({ parentspassword: e.target.value })}
-        required
-      ></input>
-      <ErrorMessage name="parentspassword" component="small" className="error-text" />
+      ></Field>
+      <ErrorMessage name="parentspassword" component="small" />
 
 
       <label>Confirm Password</label>
-      <input
+      <Field
         name="parentsconfirmpassword"
         type="password"
-        required
         value={parentsconfirmpassword || ""} // Initialize value with an empty string
         onChange={(e) => updateFields({ parentsconfirmpassword: e.target.value })}
       />
